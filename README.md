@@ -1,14 +1,20 @@
-# Bikeways for Everybody
-Crowd-sourcing lines on a map to solicit public input on ideal locations for fully protected bike routes as part of the [Boston Cyclists' Union's Bikeways for Everybody initiative](http://bostoncyclistsunion.org/bikeways-for-everybody/). See the live site [here](https://boston-cyclists-union.github.io/bikeways4everybody/)
+# Map-based Survey ool
+Crowd-sourcing points lines on a map to solicit input on geospatial issues. Heavily modified fork of  [Bikeways3Everybody](https://github.com/radumas/bikeways4everybody).
 
 # How to Fork
 
 ## Set Up Accounts and Fork Repository
 
-1. Get a [github](https://github.com/join), a [cartodb](https://cartodb.com/signup), and a [mapbox](https://www.mapbox.com/studio/signup/) account
+### Using third party data store
+
+1. Get a [github](https://github.com/join), a [carto](https://cartodb.com/signup), and a [mapbox](https://www.mapbox.com/studio/signup/) account
   + (*Optional*) Mac & Windows users can install the [Github Desktop Software](https://desktop.github.com/)
 2. Fork the repository by clicking on the [fork icon](#js-flash-container) at the top right of this page, like the image below. To learn more about forking, click [here](https://help.github.com/articles/fork-a-repo/).
 [![](https://help.github.com/assets/images/help/repository/fork_button.jpg)](#js-flash-container)  
+
+### Roll your own backend
+
+This repo is also desgined to work with [this Django REST app](https://github.com/easherma/map-survey)
 
 
 ## Carto
@@ -20,7 +26,7 @@ Crowd-sourcing lines on a map to solicit public input on ideal locations for ful
 4. Add an `insert_time` column by inputting the following code in the SQL pane: `ALTER TABLE bikeways ADD COLUMN insert_time timestamp DEFAULT current_timestamp;`
 4. Copy and paste the contents of `insert_function.sql` ([located here](cartoDB_functions/insert_function.sql)) into the sql pane, and then modify the name of the table to be inserted:  
 	```
-	_the_table TEXT := 'bikeways';
+	_the_table TEXT := 'YOUR TABLE NAME';
 	```  
 	This function allows you to send data from the map to the Carto using a publicly accessible URL while limiting what functions the public can perform on the data (for example, modifying or deleting existing data). This function takes the drawn shape as a GeoJSON, the description, and the username. It converts the GeoJSON to a PostGIS geometry object and then inserts a new row in the table with the geometry, and the other two user-input values. Since it isn't easy to view saved functions in cartoDB, I recommend saving the function in a text file.  
 	**If you have multiple tables** see below for more information on keeping track of multiple files.
@@ -42,12 +48,6 @@ AND		p.proowner <> 10
 2. Login to Mapbox and then click on `Studio` in the top bar.
 3. Note your **Access token** in the right bar.
 
-### Old basemap instructions
-1. Download `emerald_nolabel.tm2z` above (click on the name, then click on `raw` to initiate the download)
-2. Login to Mapbox and then click on `Studio` in the top bar.
-4. Click on `classic` in the left bar then **Upload Classic style** and locate the the file you downloaded in Step 1.
-5. Note the ID for the basemap after the upload is successful, it's in a grey box on the same line as `emerald_nolabel` and should be something like `yourusername.rand0malphanum3r1c`
-
 ## After Forking this Repository
 
 1. Perform all the steps under the [Carto](#carto) heading, then.  
@@ -65,9 +65,5 @@ AND		p.proowner <> 10
  * BostonGIS [tutorial](http://www.bostongis.com/PrinterFriendly.aspx?content_name=using_custom_osm_tiles) For clipping osm tiles to a polygon 
 
 ### Layers  
- * ~~Basemap clipped to select cities~~ (not sure if can work with Mapbox)
- * Crash data?
- * Existing infrastructure
- * Bikeways for Everybody corridors
-
+The repo is loaded with information and layers relevant to the original project, which was a freight-related survey funded by the Illinois Department of Transportation and the Illinois Soybean Association. 
 
